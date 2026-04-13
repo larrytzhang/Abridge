@@ -39,11 +39,11 @@ interface ButtonProps {
 
 const variantStyles: Record<string, string> = {
   primary:
-    "bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500",
+    "bg-teal-600 text-white hover:bg-teal-700 focus-visible:ring-teal-500",
   secondary:
-    "bg-white text-blue-600 border border-blue-600 hover:bg-blue-50 focus-visible:ring-blue-500",
+    "border border-slate-300 text-slate-700 hover:bg-slate-50 focus-visible:ring-teal-500",
   ghost:
-    "bg-transparent text-slate-700 hover:bg-slate-100 focus-visible:ring-slate-400",
+    "bg-transparent text-slate-600 hover:bg-slate-100 focus-visible:ring-slate-400",
 };
 
 const sizeStyles: Record<string, string> = {

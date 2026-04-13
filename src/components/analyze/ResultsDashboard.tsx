@@ -100,18 +100,18 @@ export default function ResultsDashboard({
               key={tab.key}
               type="button"
               onClick={() => setActiveTab(tab.key)}
-              className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+              className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors ${
                 isActive
-                  ? "bg-blue-100 text-blue-700"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  ? "bg-teal-50 text-teal-700"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
               }`}
             >
               {tab.label}
               <span
                 className={`inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-xs font-semibold ${
                   isActive
-                    ? "bg-blue-200 text-blue-800"
-                    : "bg-gray-200 text-gray-600"
+                    ? "bg-teal-100 text-teal-800"
+                    : "bg-slate-100 text-slate-600"
                 }`}
               >
                 {count}

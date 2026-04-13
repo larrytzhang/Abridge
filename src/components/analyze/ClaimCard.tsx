@@ -101,8 +101,8 @@ export default function ClaimCard({ claim, isSelected, onSelect }: ClaimCardProp
   const [showEvidence, setShowEvidence] = useState(false);
 
   const selectedStyles = isSelected
-    ? "border-l-4 border-l-blue-600 bg-blue-50"
-    : "border border-gray-200 bg-white";
+    ? "ring-2 ring-teal-500 bg-teal-50/40"
+    : "border border-slate-200 bg-white hover:border-slate-300";
 
   return (
     <div
@@ -115,7 +115,7 @@ export default function ClaimCard({ claim, isSelected, onSelect }: ClaimCardProp
           onSelect(claim.id);
         }
       }}
-      className={`cursor-pointer rounded-lg p-4 shadow-sm transition-colors hover:shadow-md ${selectedStyles}`}
+      className={`cursor-pointer rounded-lg p-4 transition-all duration-150 ${selectedStyles}`}
     >
       {/* Header row: Badge, SOAP section, category */}
       <div className="flex flex-wrap items-center gap-2">
@@ -158,7 +158,7 @@ export default function ClaimCard({ claim, isSelected, onSelect }: ClaimCardProp
             e.stopPropagation();
             setShowEvidence((prev) => !prev);
           }}
-          className="text-xs font-medium text-blue-600 hover:text-blue-800 hover:underline"
+          className="text-xs font-medium text-teal-600 hover:text-teal-800 hover:underline"
         >
           {showEvidence ? "Hide evidence" : "Show evidence"}
         </button>

@@ -1,141 +1,142 @@
 import Link from "next/link";
 
 /**
- * LandingPage — Marketing page for NoteCheck. Explains what the tool does,
- * how it works, key features, and drives users to try the demo.
+ * LandingPage — Marketing page for NoteCheck.
  *
- * Sections: Hero, How It Works (3 steps), Features, Call to Action.
+ * Design: left-aligned hero, narrative flow, asymmetric features grid.
+ * Avoids AI-generated patterns: no numbered circles, no centered-everything,
+ * no symmetrical 3-column grids.
+ *
  * Props: none (Next.js page component)
- * Renders: full landing page with navigation to /analyze
+ * Renders: hero, process section, features, and CTA
  */
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero */}
-      <section className="mx-auto max-w-5xl px-4 pb-20 pt-16 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl">
-            Every claim.{" "}
-            <span className="text-blue-600">Verified.</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600">
-            Detect hallucinations in AI-generated clinical notes before they
-            reach the patient chart. Every factual claim is extracted, checked
-            against the conversation transcript, and flagged with evidence.
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-4">
-            <Link
-              href="/analyze?demo=true"
-              className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
-            >
-              Try the Demo
-            </Link>
-            <Link
-              href="/analyze"
-              className="rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
-            >
-              Analyze Your Own
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-bold text-slate-900">
-            How It Works
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-center text-slate-500">
-            Three steps to verify any AI-generated clinical note.
-          </p>
-          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3">
-            {/* Step 1 */}
-            <div className="rounded-lg bg-white p-8 shadow-sm border border-slate-200 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold">
-                1
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-slate-900">
-                Paste
-              </h3>
-              <p className="mt-2 text-sm text-slate-500">
-                Input the conversation transcript and the AI-generated clinical
-                note.
-              </p>
-            </div>
-            {/* Step 2 */}
-            <div className="rounded-lg bg-white p-8 shadow-sm border border-slate-200 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold">
-                2
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-slate-900">
-                Analyze
-              </h3>
-              <p className="mt-2 text-sm text-slate-500">
-                The system breaks the note into individual claims and checks each
-                one against the transcript.
-              </p>
-            </div>
-            {/* Step 3 */}
-            <div className="rounded-lg bg-white p-8 shadow-sm border border-slate-200 text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold">
-                3
-              </div>
-              <h3 className="mt-4 text-lg font-semibold text-slate-900">
-                Verify
-              </h3>
-              <p className="mt-2 text-sm text-slate-500">
-                See which claims are grounded, hallucinated, or partially
-                supported — with linked evidence.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-center text-3xl font-bold text-slate-900">
-            Built for Clinical AI Teams
-          </h2>
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <FeatureItem
-              title="Claim-Level Granularity"
-              description="Every factual assertion in the note is extracted and verified individually — nothing slips through."
-            />
-            <FeatureItem
-              title="Confidence Scoring"
-              description="Each claim gets a 0-100% confidence score so you can prioritize review on the most uncertain findings."
-            />
-            <FeatureItem
-              title="Evidence Linking"
-              description="Click any claim to see the exact transcript lines that support or contradict it."
-            />
-            <FeatureItem
-              title="Exportable Reports"
-              description="Download a full hallucination audit report in Markdown for documentation and compliance."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="bg-slate-900 py-20">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white">
-            Stop shipping hallucinations.
-          </h2>
-          <p className="mt-4 text-slate-400">
-            Built for clinical AI teams who demand accuracy in every generated
-            note.
-          </p>
+      {/* Hero — left-aligned, not centered */}
+      <section className="mx-auto max-w-5xl px-4 pb-24 pt-20 sm:px-6 lg:px-8">
+        <p className="text-[13px] font-semibold uppercase tracking-widest text-teal-600">
+          Clinical note verification
+        </p>
+        <h1 className="mt-3 max-w-xl text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+          Every claim in the note.
+          <br />
+          Checked against the conversation.
+        </h1>
+        <p className="mt-5 max-w-lg text-base leading-relaxed text-slate-500">
+          AI medical scribes can hallucinate — fabricating drug names, inflating
+          severity scores, reversing diagnoses. NoteCheck catches it before the
+          note hits the chart.
+        </p>
+        <div className="mt-8 flex gap-3">
           <Link
             href="/analyze?demo=true"
-            className="mt-8 inline-block rounded-lg bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
+            className="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700 transition-colors"
           >
-            Try the Demo Now
+            Try the demo
           </Link>
+          <Link
+            href="/analyze"
+            className="rounded-md border border-slate-300 px-5 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            Paste your own
+          </Link>
+        </div>
+      </section>
+
+      {/* Process — horizontal timeline, not numbered circles */}
+      <section className="border-y border-slate-100 bg-slate-50/60 py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-lg font-semibold text-slate-900">How it works</h2>
+          <div className="mt-8 grid grid-cols-1 gap-px sm:grid-cols-3">
+            <ProcessStep
+              step="01"
+              title="Paste"
+              description="Drop in the conversation transcript and the AI-generated clinical note."
+            />
+            <ProcessStep
+              step="02"
+              title="Extract"
+              description="Each factual assertion in the note is isolated as a verifiable claim."
+            />
+            <ProcessStep
+              step="03"
+              title="Verify"
+              description="Every claim is checked against the transcript — grounded, hallucinated, or partial."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Features — asymmetric, not a 2x2 grid of identical cards */}
+      <section className="py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-lg font-semibold text-slate-900">
+            What you get
+          </h2>
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <div className="sm:col-span-2 rounded-lg border border-slate-200 p-6">
+              <h3 className="text-sm font-semibold text-slate-900">
+                Claim-level granularity
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                The note isn&apos;t checked as a whole — every atomic assertion is
+                extracted and verified independently. A note with 30 claims might
+                have 25 grounded and 5 hallucinated. You&apos;ll see exactly which 5.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200 p-6">
+              <h3 className="text-sm font-semibold text-slate-900">
+                Evidence linking
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                Click any claim to see the exact transcript lines that
+                support or contradict it.
+              </p>
+            </div>
+            <div className="rounded-lg border border-slate-200 p-6">
+              <h3 className="text-sm font-semibold text-slate-900">
+                Confidence scoring
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                Each claim gets a 0–100% confidence score so you can prioritize
+                review on the most uncertain findings.
+              </p>
+            </div>
+            <div className="sm:col-span-2 rounded-lg border border-slate-200 p-6">
+              <h3 className="text-sm font-semibold text-slate-900">
+                Exportable audit reports
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                Download a full hallucination audit in Markdown — every claim,
+                verdict, evidence quote, and reasoning step. Ready for
+                documentation, compliance review, or sharing with your team.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA — minimal, not a dark hero */}
+      <section className="border-t border-slate-100 py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-slate-900">
+                See it on real clinical data.
+              </h2>
+              <p className="mt-1 text-sm text-slate-500">
+                The demo includes a doctor-patient transcript with 15 embedded
+                hallucinations in the note.
+              </p>
+            </div>
+            <Link
+              href="/analyze?demo=true"
+              className="shrink-0 rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-teal-700 transition-colors"
+            >
+              Try the demo
+            </Link>
+          </div>
         </div>
       </section>
     </div>
@@ -143,23 +144,30 @@ export default function LandingPage() {
 }
 
 /**
- * FeatureItem — Renders a single feature card with title and description.
+ * ProcessStep — Single step in the "How it works" section.
+ * Uses a monospace step number instead of numbered circles.
  *
- * @param title       — short feature name
- * @param description — one-sentence explanation of the feature
- * @returns a styled feature card
+ * @param step — step number as string (e.g., "01")
+ * @param title — short step title
+ * @param description — one-sentence description
+ * @returns styled step block
  */
-function FeatureItem({
+function ProcessStep({
+  step,
   title,
   description,
 }: {
+  step: string;
   title: string;
   description: string;
 }) {
   return (
-    <div className="rounded-lg border border-slate-200 bg-white p-6">
-      <h3 className="text-base font-semibold text-slate-900">{title}</h3>
-      <p className="mt-2 text-sm text-slate-500">{description}</p>
+    <div className="border-l border-slate-200 py-1 pl-6 first:border-l-0 first:pl-0 sm:border-l sm:first:border-l-0">
+      <span className="font-mono text-xs text-slate-400">{step}</span>
+      <h3 className="mt-1 text-sm font-semibold text-slate-900">{title}</h3>
+      <p className="mt-1.5 text-sm leading-relaxed text-slate-500">
+        {description}
+      </p>
     </div>
   );
 }

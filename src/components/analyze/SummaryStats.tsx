@@ -1,26 +1,16 @@
 "use client";
 
 /**
- * SummaryStats — Displays aggregate analysis statistics as a set of summary
- * cards plus a prominent overall accuracy score.
+ * SummaryStats — Displays analysis results as a compact stats bar with
+ * an inline accuracy score, avoiding the centered-big-number AI pattern.
  *
  * Layout:
- *   - A 4-card grid showing:
- *       1. Total Claims (slate color)
- *       2. Grounded count and percentage (green-600)
- *       3. Hallucinated count and percentage (red-600)
- *       4. Partial count and percentage (amber-500)
- *   - A large overall accuracy score displayed below the grid, color-coded:
- *       - Green (text-green-600) if score > 70
- *       - Amber (text-amber-500) if score > 40 and <= 70
- *       - Red (text-red-600) if score <= 40
+ *   - Top row: overall accuracy score (left-aligned) with colored indicator
+ *   - Bottom row: 3 verdict counts as compact inline chips
  *
  * Props:
- *   - summary (AnalysisSummary): The aggregate statistics object containing
- *     total_claims, grounded, ungrounded, partial counts and overall_score.
- *
- * Outputs:
- *   - Renders a responsive grid of stat cards and a color-coded accuracy score.
+ *   summary (AnalysisSummary) — aggregate stats from verification
+ * Renders: a compact stats section with accuracy and verdict breakdowns
  */
 
 import React from "react";
@@ -31,15 +21,12 @@ interface SummaryStatsProps {
 }
 
 /**
- * getPercentage — Computes the percentage of a count relative to a total,
- * returning 0 when the total is zero to avoid division-by-zero.
+ * getPercentage — Computes percentage of count relative to total.
+ * Returns 0 when total is zero to avoid division-by-zero.
  *
- * Inputs:
- *   - count (number): The numerator value.
- *   - total (number): The denominator value.
- *
- * Returns:
- *   - number: The rounded percentage (0-100).
+ * @param count — numerator
+ * @param total — denominator
+ * @returns rounded percentage 0-100
  */
 function getPercentage(count: number, total: number): number {
   if (total === 0) return 0;
@@ -47,91 +34,78 @@ function getPercentage(count: number, total: number): number {
 }
 
 /**
- * getScoreColor — Returns the appropriate Tailwind text color class for the
- * overall accuracy score based on threshold boundaries.
+ * getScoreColor — Returns Tailwind classes for accuracy indicator bar.
  *
- * Inputs:
- *   - score (number): The overall accuracy score (0-100).
- *
- * Returns:
- *   - string: A Tailwind text color class:
- *     "text-green-600" if score > 70,
- *     "text-amber-500" if score > 40,
- *     "text-red-600" if score <= 40.
+ * @param score — overall accuracy 0-100
+ * @returns object with bg and text color classes
  */
-function getScoreColor(score: number): string {
-  if (score > 70) return "text-green-600";
-  if (score > 40) return "text-amber-500";
-  return "text-red-600";
+function getScoreColor(score: number): { bg: string; text: string } {
+  if (score > 70) return { bg: "bg-green-500", text: "text-green-700" };
+  if (score > 40) return { bg: "bg-amber-500", text: "text-amber-700" };
+  return { bg: "bg-red-500", text: "text-red-700" };
 }
 
 export default function SummaryStats({ summary }: SummaryStatsProps) {
   const { total_claims, grounded, ungrounded, partial, overall_score } = summary;
-
-  const cards = [
-    {
-      label: "Total Claims",
-      count: total_claims,
-      percentage: null,
-      colorClass: "text-slate-700",
-      borderClass: "border-slate-200",
-      bgClass: "bg-slate-50",
-    },
-    {
-      label: "Grounded",
-      count: grounded,
-      percentage: getPercentage(grounded, total_claims),
-      colorClass: "text-green-600",
-      borderClass: "border-green-200",
-      bgClass: "bg-green-50",
-    },
-    {
-      label: "Hallucinated",
-      count: ungrounded,
-      percentage: getPercentage(ungrounded, total_claims),
-      colorClass: "text-red-600",
-      borderClass: "border-red-200",
-      bgClass: "bg-red-50",
-    },
-    {
-      label: "Partial",
-      count: partial,
-      percentage: getPercentage(partial, total_claims),
-      colorClass: "text-amber-500",
-      borderClass: "border-amber-200",
-      bgClass: "bg-amber-50",
-    },
-  ];
+  const colors = getScoreColor(overall_score);
 
   return (
-    <div className="space-y-6">
-      {/* Stat cards grid */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        {cards.map((card) => (
-          <div
-            key={card.label}
-            className={`rounded-lg border ${card.borderClass} ${card.bgClass} p-4`}
-          >
-            <p className="text-sm font-medium text-gray-500">{card.label}</p>
-            <p className={`mt-1 text-2xl font-bold ${card.colorClass}`}>
-              {card.count}
-            </p>
-            {card.percentage !== null && (
-              <p className={`text-sm ${card.colorClass}`}>
-                {card.percentage}%
-              </p>
-            )}
-          </div>
-        ))}
+    <div className="rounded-lg border border-slate-200 bg-white p-5">
+      {/* Accuracy row */}
+      <div className="flex items-baseline justify-between">
+        <div>
+          <span className={`text-2xl font-bold tabular-nums ${colors.text}`}>
+            {overall_score}%
+          </span>
+          <span className="ml-2 text-[13px] text-slate-500">accuracy</span>
+        </div>
+        <span className="text-[13px] text-slate-400">
+          {total_claims} claims analyzed
+        </span>
       </div>
 
-      {/* Overall accuracy score */}
-      <div className="flex flex-col items-center rounded-lg border border-gray-200 bg-white p-6">
-        <p className="text-sm font-medium text-gray-500">Overall Accuracy</p>
-        <p className={`mt-1 text-5xl font-extrabold ${getScoreColor(overall_score)}`}>
-          {overall_score}
-        </p>
-        <p className="mt-1 text-sm text-gray-400">out of 100</p>
+      {/* Progress bar */}
+      <div className="mt-3 flex h-2 gap-0.5 overflow-hidden rounded-full">
+        {grounded > 0 && (
+          <div
+            className="bg-green-500 rounded-l-full"
+            style={{ width: `${getPercentage(grounded, total_claims)}%` }}
+          />
+        )}
+        {partial > 0 && (
+          <div
+            className="bg-amber-400"
+            style={{ width: `${getPercentage(partial, total_claims)}%` }}
+          />
+        )}
+        {ungrounded > 0 && (
+          <div
+            className="bg-red-500 rounded-r-full"
+            style={{ width: `${getPercentage(ungrounded, total_claims)}%` }}
+          />
+        )}
+      </div>
+
+      {/* Verdict breakdown */}
+      <div className="mt-4 flex gap-4 text-[13px]">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-green-500" />
+          <span className="text-slate-600">
+            {grounded} grounded
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
+          <span className="text-slate-600">
+            {ungrounded} hallucinated
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
+          <span className="text-slate-600">
+            {partial} partial
+          </span>
+        </div>
       </div>
     </div>
   );
