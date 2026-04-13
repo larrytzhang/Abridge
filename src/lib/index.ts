@@ -11,6 +11,9 @@
  *   - All type definitions (Claim, VerifiedClaim, etc.) from "./types"
  *   - extractClaims()  -- extracts verifiable claims from a clinical note
  *   - verifyClaims()   -- checks claims against a source transcript
+ *   - apiRateLimiter   -- rate limiter with checkRateLimit / rateLimitResponse
+ *   - ExtractClaimsSchema, VerifyClaimsSchema -- Zod request schemas
+ *   - formatValidationError()  -- turns Zod errors into user-facing strings
  *
  * Intentionally NOT exported (implementation details):
  *   - The OpenAI client singleton (./openai)
@@ -37,3 +40,6 @@ export type {
 
 export { extractClaims } from "./claim-extractor";
 export { verifyClaims } from "./claim-verifier";
+
+export { apiRateLimiter, checkRateLimit, rateLimitResponse } from "./rate-limit";
+export { ExtractClaimsSchema, VerifyClaimsSchema, formatValidationError } from "./validation";

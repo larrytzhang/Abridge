@@ -102,35 +102,82 @@ export function useAnalysis() {
       setResult(null);
       setClaims([]);
 
-      const extractRes = await fetch("/api/extract-claims", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ note }),
-      });
+      /**
+       * Phase 1 fetch — Sends the clinical note to /api/extract-claims with a
+       * 30-second timeout via AbortController. On failure, extracts a
+       * user-friendly error message from the JSON response body. On success,
+       * validates that the response contains a claims array before proceeding.
+       */
+      const extractController = new AbortController();
+      const extractTimeout = setTimeout(() => extractController.abort(), 30_000);
+      let extractRes: Response;
+      try {
+        extractRes = await fetch("/api/extract-claims", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ note }),
+          signal: extractController.signal,
+        });
+      } finally {
+        clearTimeout(extractTimeout);
+      }
 
       if (!extractRes.ok) {
-        const errBody = await extractRes.text();
-        throw new Error(`Claim extraction failed: ${errBody}`);
+        const errData = await extractRes.json().catch(() => null);
+        throw new Error(errData?.error ?? "Claim extraction failed. Please try again.");
       }
 
       const extractData: ExtractClaimsResponse = await extractRes.json();
+
+      /**
+       * Runtime validation — Ensures the extract response contains a valid
+       * claims array before storing it in state. Guards against malformed
+       * or unexpected server responses.
+       */
+      if (!extractData.claims || !Array.isArray(extractData.claims)) {
+        throw new Error("Invalid response from server. Please try again.");
+      }
+
       setClaims(extractData.claims);
 
       // Phase 2: Verify claims against transcript
       setStatus("verifying");
 
-      const verifyRes = await fetch("/api/verify-claims", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ claims: extractData.claims, transcript }),
-      });
+      /**
+       * Phase 2 fetch — Sends the extracted claims and transcript to
+       * /api/verify-claims with a 30-second timeout via AbortController.
+       * On failure, extracts a user-friendly error from the JSON response.
+       * On success, validates the response shape before computing summary.
+       */
+      const verifyController = new AbortController();
+      const verifyTimeout = setTimeout(() => verifyController.abort(), 30_000);
+      let verifyRes: Response;
+      try {
+        verifyRes = await fetch("/api/verify-claims", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ claims: extractData.claims, transcript }),
+          signal: verifyController.signal,
+        });
+      } finally {
+        clearTimeout(verifyTimeout);
+      }
 
       if (!verifyRes.ok) {
-        const errBody = await verifyRes.text();
-        throw new Error(`Claim verification failed: ${errBody}`);
+        const errData = await verifyRes.json().catch(() => null);
+        throw new Error(errData?.error ?? "Claim verification failed. Please try again.");
       }
 
       const verifyData: VerifyClaimsResponse = await verifyRes.json();
+
+      /**
+       * Runtime validation — Ensures the verify response contains a valid
+       * verified_claims array before computing summary statistics. Guards
+       * against malformed or unexpected server responses.
+       */
+      if (!verifyData.verified_claims || !Array.isArray(verifyData.verified_claims)) {
+        throw new Error("Invalid response from server. Please try again.");
+      }
 
       // Compute summary and build final result
       const summary = computeSummary(verifyData.verified_claims);

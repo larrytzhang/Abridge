@@ -90,7 +90,7 @@ export default function ResultsDashboard({
   return (
     <div className="flex flex-col">
       {/* Filter tabs */}
-      <div className="flex gap-1 border-b border-gray-200 pb-2">
+      <div className="flex gap-1 border-b border-slate-200 pb-2">
         {TAB_CONFIG.map((tab) => {
           const count = getTabCount(claims, tab.verdict);
           const isActive = activeTab === tab.key;
@@ -137,8 +137,8 @@ export default function ResultsDashboard({
            * Empty state — Displayed when no claims match the currently active
            * filter tab. Shows a neutral message indicating no results.
            */
-          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 py-12">
-            <p className="text-sm text-gray-400">
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 py-12">
+            <p className="text-sm text-slate-400">
               No claims match the current filter.
             </p>
           </div>

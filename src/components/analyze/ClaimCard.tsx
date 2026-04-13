@@ -173,7 +173,7 @@ export default function ClaimCard({ claim, isSelected, onSelect }: ClaimCardProp
                 </p>
                 {claim.evidence.transcript_quotes.map((quote, idx) => (
                   <blockquote
-                    key={idx}
+                    key={`quote-${idx}-${quote.slice(0, 20)}`}
                     className="mb-1 border-l-2 border-gray-300 pl-2 text-xs text-gray-600"
                   >
                     &ldquo;{quote}&rdquo;
